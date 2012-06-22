@@ -18,19 +18,20 @@ public class TestDeadLock {
 		private static int nextId;
 		private Test obj1;
 		private Test obj2;
+		private int id;
 
 		public Tester(Test obj1, Test obj2) {
 			this.obj1 = obj1;
 			this.obj2 = obj2;
-			nextId++;
+			id = nextId++;
 		}
 
 		@Override
 		public void run() {
 			// System.out.println("Thread: " + nextId);
-			System.out.println("Thread: " + nextId + " Object value: "
+			System.out.println("Thread: " + id + " Object value: "
 					+ obj1.getValue());
-			System.out.println("Thread: " + nextId + " Equality: "
+			System.out.println("Thread: " + id + " Equality: "
 					+ obj1.equals(obj2));
 			// System.out.println("Thread: " + nextId);
 		}
@@ -51,8 +52,14 @@ public class TestDeadLock {
 		// @Override
 		public synchronized boolean equals(Object obj) {
 			if (obj instanceof Test) {
-				Thread.yield();
-				System.out.println("instanceof");
+				// Thread.yield();
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("in instanceof");
 				return this.value == ((Test) obj).getValue();
 			}
 			return false;
