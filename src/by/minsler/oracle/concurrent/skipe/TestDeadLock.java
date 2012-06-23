@@ -52,7 +52,8 @@ public class TestDeadLock {
 		// @Override
 		public synchronized boolean equals(Object obj) {
 			if (obj instanceof Test) {
-				// Thread.yield();
+				// Thread.yield(); не гарантирует, что другой поток захватит
+				// объект obj2;
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
